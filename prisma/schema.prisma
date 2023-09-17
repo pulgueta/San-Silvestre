@@ -1,0 +1,76 @@
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Store {
+  storeId       Int       @id @unique @default(autoincrement())
+  storeName     String    @unique
+  storeCategory String
+  owner         Owner[]
+  products      Product[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Product {
+  productId   Int      @id @unique @default(autoincrement())
+  productName String
+  category    String
+  quantity    Int
+  stock       Boolean
+  store       Store    @relation(fields: [productId], references: [storeId])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Owner {
+  ownerId   Int      @id @unique @default(autoincrement())
+  ownerName String
+  stores    Store[]
+  planType  Plan     @relation(fields: [ownerId], references: [pricePlanId])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  orderId   String     @id @unique @default(uuid())
+  customer  Customer[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Customer {
+  customerId  Int      @id @unique @default(autoincrement())
+  firstName   String
+  lastName    String
+  age         Int
+  address     String
+  state       String
+  city        String
+  zip         Int
+  phoneNumber String
+  orders      Order[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum PlanType {
+  FREE
+  PRO
+  BUSINESS
+}
+
+model Plan {
+  pricePlanId     Int      @id @unique @default(autoincrement())
+  planName        String   @unique
+  planDescription String
+  planPrice       Float
+  planType        PlanType
+  owner           Owner?
+}
