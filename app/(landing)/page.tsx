@@ -76,7 +76,7 @@ const Landing: NextPage = () => {
                     className="rounded-lg"
                 />
                 <div className='max-w-2xl xl:max-w-xl space-y-8 text-black dark:text-white'>
-                    <h1 className='text-3xl text-center xl:text-right font-bold'>We are the top mall in town</h1>
+                    <h1 className='text-3xl text-center xl:text-left font-bold'>We are the top mall in town</h1>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam necessitatibus minus in consequuntur eum accusamus perspiciatis nobis magni sunt! Deleniti consectetur a laudantium sunt autem quasi veritatis vitae ad qui?</p>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam necessitatibus minus in consequuntur eum accusamus perspiciatis nobis magni sunt! Deleniti consectetur a laudantium sunt autem quasi veritatis vitae ad qui?</p>
                     <Button color='primary' size='lg' className='w-full' asChild>

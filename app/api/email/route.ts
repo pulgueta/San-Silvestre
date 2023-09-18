@@ -11,6 +11,9 @@ export const POST = async (req: NextRequest) => {
 
     if (req.method !== 'POST') return NextResponse.json({ error: 'Method not allowed' }, { status: 405 })
 
+    if (!name) return NextResponse.json({ error: 'Name is missing' }, { status: 400 })
+    if (!message) return NextResponse.json({ error: 'Message is missing' }, { status: 400 })
+
     try {
         const data = await resend.emails.send({
             from: 'San Silvestre <onboarding@resend.dev>',

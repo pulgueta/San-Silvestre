@@ -1,4 +1,4 @@
-import { NextPage } from 'next'
+import { Metadata, NextPage } from 'next'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -7,6 +7,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { CheckCircleIcon, XIcon } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+
+export const metadata: Metadata = {
+    title: 'Pricing'
+}
 
 const Pricing: NextPage = () => {
 

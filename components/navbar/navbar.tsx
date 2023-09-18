@@ -7,8 +7,11 @@ import { MenuIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { ThemeSwitcher } from './theme-swithcer'
+import { UserButton, currentUser } from '@clerk/nextjs'
 
-const LandingNavbar: FC = () => {
+const LandingNavbar: FC = async () => {
+    const user = await currentUser()
+
     const routes = [
         {
             label: 'Stores',
@@ -43,16 +46,22 @@ const LandingNavbar: FC = () => {
             <div className='flex items-center gap-4'>
                 <div className='flex items-center gap-4'>
                     <div className='hidden md:flex md:items-center md:gap-4'>
-                        <Button asChild>
-                            <Link href='/sign-in' className='font-medium text-lg'>
-                                Sign In
-                            </Link>
-                        </Button>
-                        <Button asChild variant='outline'>
-                            <Link href='/sign-up' className='font-medium text-lg'>
-                                Sign Up
-                            </Link>
-                        </Button>
+                        {
+                            user
+                                ? <UserButton afterSignOutUrl='/' />
+                                : <>
+                                    <Button asChild>
+                                        <Link href='/login' className='font-medium text-lg'>
+                                            Sign In
+                                        </Link>
+                                    </Button>
+                                    <Button asChild variant='outline'>
+                                        <Link href='/register' className='font-medium text-lg'>
+                                            Sign Up
+                                        </Link>
+                                    </Button>
+                                </>
+                        }
                     </div>
                     <ThemeSwitcher />
                 </div>
@@ -73,16 +82,22 @@ const LandingNavbar: FC = () => {
                                     </li>
                                 ))}
                                 <div className='flex flex-col space-y-4 md:hidden'>
-                                    <Button asChild>
-                                        <Link href='/sign-in' className='font-medium text-lg'>
-                                            Sign In
-                                        </Link>
-                                    </Button>
-                                    <Button asChild variant='outline'>
-                                        <Link href='/sign-up' className='font-medium text-lg'>
-                                            Sign Up
-                                        </Link>
-                                    </Button>
+                                    {
+                                        user
+                                            ? <UserButton afterSignOutUrl='/' />
+                                            : <>
+                                                <Button asChild>
+                                                    <Link href='/login' className='font-medium text-lg'>
+                                                        Sign In
+                                                    </Link>
+                                                </Button>
+                                                <Button asChild variant='outline'>
+                                                    <Link href='/register' className='font-medium text-lg'>
+                                                        Sign Up
+                                                    </Link>
+                                                </Button>
+                                            </>
+                                    }
                                 </div>
                             </ul>
                         </SheetContent>

@@ -13,20 +13,20 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/components/ui/use-toast'
 
+const contactSchema = z.object({
+    name: z.string().min(4, {
+        message: 'Name must be at least 4 characters long'
+    }),
+    email: z.string().email({
+        message: 'Invalid email address'
+    }).min(6),
+    message: z.string().min(10, {
+        message: 'Message must be at least 10 characters long'
+    })
+})
 
 const Contact: NextPage = () => {
     const { toast } = useToast()
-    const contactSchema = z.object({
-        name: z.string().min(4, {
-            message: 'Name must be at least 4 characters long'
-        }),
-        email: z.string().email({
-            message: 'Invalid email address'
-        }).min(6),
-        message: z.string().min(10, {
-            message: 'Message must be at least 10 characters long'
-        })
-    })
 
     const form = useForm<z.infer<typeof contactSchema>>({
         resolver: zodResolver(contactSchema),

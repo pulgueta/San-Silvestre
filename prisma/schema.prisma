@@ -9,7 +9,7 @@ generator client {
 }
 
 model Store {
-  storeId       Int       @id @unique @default(autoincrement())
+  id            Int       @id @unique @default(autoincrement())
   storeName     String    @unique
   storeCategory String
   owner         Owner[]
@@ -19,36 +19,37 @@ model Store {
 }
 
 model Product {
-  productId   Int      @id @unique @default(autoincrement())
+  id          Int      @id @unique @default(autoincrement())
   productName String
   category    String
   quantity    Int
   stock       Boolean
-  store       Store    @relation(fields: [productId], references: [storeId])
+  store       Store    @relation(fields: [id], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
 model Owner {
-  ownerId   Int      @id @unique @default(autoincrement())
+  id        Int      @id @unique @default(autoincrement())
   ownerName String
   stores    Store[]
-  planType  Plan     @relation(fields: [ownerId], references: [pricePlanId])
+  planType  Plan     @relation(fields: [id], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Order {
-  orderId   String     @id @unique @default(uuid())
+  id        String     @id @unique @default(uuid())
   customer  Customer[]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 }
 
 model Customer {
-  customerId  Int      @id @unique @default(autoincrement())
+  id          Int      @id @unique @default(autoincrement())
   firstName   String
   lastName    String
+  email       String   @db.Text
   age         Int
   address     String
   state       String
@@ -67,7 +68,7 @@ enum PlanType {
 }
 
 model Plan {
-  pricePlanId     Int      @id @unique @default(autoincrement())
+  id              Int      @id @unique @default(autoincrement())
   planName        String   @unique
   planDescription String
   planPrice       Float
