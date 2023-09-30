@@ -4,13 +4,11 @@ import Link from 'next/link'
 
 import { MenuIcon } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { ThemeSwitcher } from './theme-swithcer'
-import { UserButton, currentUser } from '@clerk/nextjs'
 
 const LandingNavbar: FC = async () => {
-    const user = await currentUser()
 
     const routes = [
         {
@@ -45,24 +43,13 @@ const LandingNavbar: FC = async () => {
             </ul>
             <div className='flex items-center gap-4'>
                 <div className='flex items-center gap-4'>
+
+                    <Button variant='destructive'>Log Out</Button>
                     <div className='hidden md:flex md:items-center md:gap-4'>
-                        {
-                            user
-                                ? <UserButton afterSignOutUrl='/' />
-                                : <>
-                                    <Button asChild>
-                                        <Link href='/login' className='font-medium text-lg'>
-                                            Sign In
-                                        </Link>
-                                    </Button>
-                                    <Button asChild variant='outline'>
-                                        <Link href='/register' className='font-medium text-lg'>
-                                            Sign Up
-                                        </Link>
-                                    </Button>
-                                </>
-                        }
+                        <Link className={buttonVariants({ variant: 'default' })} href='/login' scroll={false}>Sign In</Link>
+                        <Link className={buttonVariants({ variant: 'outline' })} href='/register' scroll={false}>Sign Up</Link>
                     </div>
+
                     <ThemeSwitcher />
                 </div>
                 <div className='flex items-center lg:hidden'>
@@ -82,22 +69,9 @@ const LandingNavbar: FC = async () => {
                                     </li>
                                 ))}
                                 <div className='flex flex-col space-y-4 md:hidden'>
-                                    {
-                                        user
-                                            ? <UserButton afterSignOutUrl='/' />
-                                            : <>
-                                                <Button asChild>
-                                                    <Link href='/login' className='font-medium text-lg'>
-                                                        Sign In
-                                                    </Link>
-                                                </Button>
-                                                <Button asChild variant='outline'>
-                                                    <Link href='/register' className='font-medium text-lg'>
-                                                        Sign Up
-                                                    </Link>
-                                                </Button>
-                                            </>
-                                    }
+                                    <Button variant='destructive'>Log Out</Button>
+                                    <Link className={buttonVariants({ variant: 'default' })} href='/login' scroll={false}>Sign In</Link>
+                                    <Link className={buttonVariants({ variant: 'outline' })} href='/register' scroll={false}>Sign Up</Link>
                                 </div>
                             </ul>
                         </SheetContent>

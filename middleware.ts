@@ -1,10 +1,7 @@
-import { middleware as Middleware } from "@/middlewares"
-import { clerk } from "@/middlewares/clerk"
+import { middleware as Middleware } from '@/middlewares'
 
-export default Middleware([clerk])
+export default Middleware([])
 
 export const config = {
-    matcher: [
-        '/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'
-    ],
+    matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
 }
