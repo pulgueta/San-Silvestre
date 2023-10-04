@@ -11,9 +11,11 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { MobileLogOut, NavbarLogOut, SignInButton } from '@/components/ui/logout-button'
 import { authOptions } from '@/lib/next-auth'
 
-const LandingNavbar: FC = async () => {
+const UserNavbar: FC = async () => {
 
     const user = await getServerSession(authOptions)
+
+    console.log(user?.user);
 
     const routes = [
         {
@@ -92,4 +94,4 @@ const LandingNavbar: FC = async () => {
         </nav >
     )
 }
-export default LandingNavbar
+export default UserNavbar

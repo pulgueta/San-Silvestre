@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
 import { ThemeProvider } from '@/providers/theme-provider'
+import { AuthProvider } from '@/providers/session-provider'
 import { Layout } from '@/interfaces'
 import { Toaster } from '@/components/ui/toaster'
 
@@ -25,7 +26,9 @@ const RootLayout: FC<Layout> = ({ children }) => {
     <html lang='en'>
       <body className={inter.className}>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-          {children}
+          <AuthProvider>
+            {children}
+          </AuthProvider>
           <Toaster />
         </ThemeProvider>
       </body>

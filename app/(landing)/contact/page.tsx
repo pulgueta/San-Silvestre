@@ -62,7 +62,7 @@ const Contact: NextPage = () => {
     }
 
     return (
-        <div className='min-h-[calc(100vh-344px)] bg-neutral-100 dark:bg-neutral-950 flex flex-col items-center justify-start p-4'>
+        <div className='min-h-[calc(100vh-80px)] bg-neutral-100 dark:bg-neutral-950 flex flex-col items-center justify-center p-4'>
             <h1 className='text-4xl font-bold mt-4 mb-8'>Contact Us</h1>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 w-96 lg:w-[540px] p-6 bg-white dark:bg-neutral-900 rounded-lg lg:mb-8 mb-16'>

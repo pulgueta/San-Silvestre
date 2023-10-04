@@ -14,6 +14,8 @@ export const POST = async (req: NextRequest) => {
     if (!name) return NextResponse.json({ error: 'Name is missing' }, { status: 400 })
     if (!message) return NextResponse.json({ error: 'Message is missing' }, { status: 400 })
 
+    if (!name && !message) return NextResponse.json({ error: 'Name and message are required' }, { status: 500 })
+
     try {
         const data = await resend.emails.send({
             from: 'San Silvestre <onboarding@resend.dev>',

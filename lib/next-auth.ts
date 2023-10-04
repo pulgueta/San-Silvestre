@@ -1,51 +1,40 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { compare } from "bcrypt";
-import { Customer } from "@prisma/client";
 
 import { db } from "@/database/db";
-import { NextResponse } from "next/server";
 
-export const authOptions: NextAuthOptions = {
+export const authOptions = {
     providers: [
         CredentialsProvider({
-            name: "credentials",
-            credentials: {},
+            name: "Credentials",
+            credentials: {
+                email: { label: "Email", type: "text", placeholder: "email" },
+                password: { label: "Password", type: "password" }
+            },
+            async authorize(credentials) {
+                db.$connect()
+                const user = await db.customer.findUnique({ where: { email: credentials?.email } })
 
-            async authorize(credentials: Customer, _req) {
-                const user = await db.customer.findUnique({
-                    where: {
-                        email: credentials.email
-                    }
-                })
-
-                try {
-                    if (!user) {
-                        return new NextResponse('User does not exist', { status: 400 })
-                    }
-
-                    const passwordsMatch = await compare(credentials.password, user.password);
-
-                    if (!passwordsMatch) {
-                        return new NextResponse('Credentials are not valid', { status: 401 });
-                    }
-
+                if (user) {
                     return user;
-                } catch (error) {
-                    return new NextResponse('Something went wrong', { status: 500 });
+                } else {
+                    return null;
                 }
             },
-        }),
+        })
     ],
     session: {
         strategy: 'jwt',
+        maxAge: 30 * 24 * 60 * 60,
+        updateAge: 24 * 60 * 60
     },
     adapter: PrismaAdapter(db),
     secret: process.env.NEXTAUTH_SECRET,
+    debug: process.env.NODE_ENV === 'development',
     pages: {
         signIn: '/login',
         signOut: '/logout',
         newUser: '/register'
     },
-};
+} satisfies NextAuthOptions

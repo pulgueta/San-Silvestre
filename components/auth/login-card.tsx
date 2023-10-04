@@ -11,6 +11,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Loader2Icon } from "lucide-react"
+import { toast } from "@/components/ui/use-toast"
+import { useRouter } from "next/navigation"
+import { signIn } from "next-auth/react"
 
 const loginSchema = z.object({
     email: z.string().email('Please enter a valid email address'),
@@ -18,6 +21,8 @@ const loginSchema = z.object({
 })
 
 const LoginCard = () => {
+    const router = useRouter()
+
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -26,8 +31,40 @@ const LoginCard = () => {
         }
     })
 
-    const onSubmit = (data: z.infer<typeof loginSchema>) => {
-        console.log(data)
+    const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+        try {
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+
+            if (res.ok) {
+                await signIn('credentials', {
+                    email: data.email,
+                    password: data.password,
+                    redirect: true,
+                    callbackUrl: '/profile',
+                })
+                toast({
+                    title: 'Success!',
+                    variant: 'default',
+                    description: 'Hello again!'
+                })
+            }
+
+        } catch (error) {
+            if (error instanceof Error) {
+                toast({
+                    title: 'Error!',
+                    variant: 'destructive',
+                    description: error.message
+                })
+            }
+
+        }
     }
 
     return (
@@ -73,7 +110,7 @@ const LoginCard = () => {
                     </form>
                 </Form>
                 <div className="flex flex-col items-center justify-end mt-4">
-                    <span>Do not have an account? <Link href='/register' className={buttonVariants({ variant: 'link' })}>Sign Up</Link></span>
+                    <span>Do not have an account? <Link href='/register' scroll={false} className={buttonVariants({ variant: 'link' })}>Sign Up</Link></span>
                     <Link href='/forgot-password' className={buttonVariants({ variant: 'link' })}>Forgot my password</Link>
                 </div>
             </CardContent>

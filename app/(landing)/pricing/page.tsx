@@ -16,7 +16,7 @@ const Pricing: NextPage = () => {
 
     return (
         <div className='min-h-[calc(100vh-344px)] bg-neutral-100 dark:bg-neutral-950 flex flex-col items-center justify-start p-4'>
-            <h1 className='text-center text-3xl font-bold mt-8 mb-16'>We have 3 plans if you want to become a seller with us</h1>
+            <h1 className='text-center text-3xl font-bold mt-8 mb-16'>We have 3 plans to become a seller with us</h1>
             <section className='flex flex-col lg:flex-row gap-4'>
                 <Card className='max-w-sm bg-neutral-50 dark:bg-neutral-900'>
                     <CardHeader className='text-center'>
