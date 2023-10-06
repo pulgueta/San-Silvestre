@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import type { Metadata } from 'next'
 
-import { Layout } from '@/interfaces'
+import { Layout } from '@/types'
 import AdminNavbar from '@/components/navbar/admin-navbar'
 
 export const metadata: Metadata = {

@@ -1,5 +1,3 @@
-import { FC } from 'react'
-
 import Link from 'next/link'
 
 import { MenuIcon } from 'lucide-react'
@@ -8,14 +6,14 @@ import { getServerSession } from 'next-auth'
 import { ThemeSwitcher } from './theme-swithcer'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { MobileLogOut, NavbarLogOut, SignInButton } from '@/components/ui/logout-button'
+import { MobileLogOut, NavbarLogOut } from '@/components/ui/logout-button'
 import { authOptions } from '@/lib/next-auth'
 
-const UserNavbar: FC = async () => {
+const UserNavbar = async () => {
 
     const user = await getServerSession(authOptions)
 
-    console.log(user?.user);
+    console.log(user);
 
     const routes = [
         {
@@ -23,23 +21,19 @@ const UserNavbar: FC = async () => {
             href: '/stores',
         },
         {
-            label: 'Pricing',
-            href: '/pricing',
+            label: 'Profile',
+            href: '/profile',
         },
         {
-            label: 'About',
-            href: '/about',
+            label: 'Orders',
+            href: '/orders',
         },
-        {
-            label: 'Contact Us',
-            href: '/contact',
-        }
     ]
 
     return (
         <nav className='h-20 border-b-2 sticky top-0 flex items-center justify-between px-4 lg:px-0 lg:justify-around bg-white/80 dark:bg-black/80 backdrop-blur z-10'>
             <Link href='/' className='font-bold text-4xl'>San Silvestre</Link>
-            <ul className='hidden lg:flex md:items-center md:gap-4'>
+            <ul className='hidden lg:flex md:items-center md:gap-8'>
                 {routes.map(route => (
                     <li key={route.href}>
                         <Link href={route.href} className='font-medium text-lg hover:text-neutral-400 transition-colors duration-300'>

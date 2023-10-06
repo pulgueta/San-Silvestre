@@ -1,6 +1,6 @@
 import { NextResponse, type NextMiddleware } from "next/server";
 
-import { MiddlewareFactory } from "@/interfaces";
+import { MiddlewareFactory } from "@/types";
 
 export const middleware = (functions: MiddlewareFactory[], index = 0): NextMiddleware => {
     const current = functions[index];

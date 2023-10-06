@@ -5,13 +5,13 @@ import { redirect } from "next/navigation"
 
 const Profile = async () => {
     const user = await getServerSession(authOptions)
-
+    
     if (!user) {
         redirect('/login')
     }
 
     return (
-        <p>{JSON.stringify(user)}</p>
+        <pre className="text-center">{JSON.stringify(user.user)}</pre>
     )
 }
 export default Profile

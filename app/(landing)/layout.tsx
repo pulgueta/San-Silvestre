@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import LandingNavbar from '@/components/navbar/navbar'
 import Footer from '@/components/footer/footer'
-import { InterceptLayout } from '@/interfaces'
+import { InterceptLayout } from '@/types'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/next-auth'
 import UserNavbar from '@/components/navbar/user-navbar'

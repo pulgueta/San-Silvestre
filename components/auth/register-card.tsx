@@ -9,12 +9,14 @@ import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Loader2Icon } from "lucide-react"
+import axios, { AxiosError } from "axios"
+import { signIn } from "next-auth/react"
+import { toast } from 'sonner'
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button, buttonVariants } from "@/components/ui/button"
-import { toast } from "@/components/ui/use-toast"
 import { Checkbox } from "@/components/ui/checkbox"
 
 const registerSchema = z.object({
@@ -48,35 +50,25 @@ const RegisterCard = () => {
     })
 
     const onSubmit = async ({ confirmPassword, ...rest }: z.infer<typeof registerSchema>) => {
-        try {
-            const res = await fetch('/api/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(rest)
+        await axios.post('/api/login', rest)
+            .then(async ({ data }) => {
+                await signIn('credentials', {
+                    callbackUrl: '/profile',
+                    redirect: true
+                })
+                toast.success('Login', {
+                    dismissible: true,
+                    description: 'Welcome back!'
+                })
             })
-
-            if (res.ok) {
-                toast({
-                    title: 'Success!',
-                    variant: 'default',
-                    description: 'Your account has been created.'
-                })
-
-                router.push('/profile')
-            }
-
-        } catch (error) {
-            if (error instanceof Error) {
-                toast({
-                    title: 'Error!',
-                    variant: 'destructive',
-                    description: error.message
-                })
-            }
-
-        }
+            .catch((error) => {
+                if (error instanceof AxiosError) {
+                    toast.error(error.response?.status === 401 && 'Error', {
+                        dismissible: true,
+                        description: 'Invalid credentials'
+                    })
+                }
+            })
     }
 
     return (

@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { hash } from "bcrypt";
 
 import { db } from "@/database/db";
+import { User } from "@prisma/client";
 
 export const POST = async (req: NextRequest) => {
     if (req.method !== 'POST') return new NextResponse('Method not allowed', { status: 405 })
@@ -15,15 +16,15 @@ export const POST = async (req: NextRequest) => {
     if (!email) return new NextResponse('Email is missing', { status: 400 })
     if (!password) return new NextResponse('Password is missing', { status: 400 })
 
-    const userExists = await db.customer.findUnique({
+    const userExists = await db.user.findUnique({
         where: { email }
-    })
+    }) as User
 
     if (userExists) return new NextResponse('Email is already in use', { status: 400 })
 
     const hashedPassword = await hash(password, 12)
 
-    const { password: userPassword, ...rest } = await db.customer.create({
+    const { password: userPassword, ...rest } = await db.user.create({
         data: {
             firstName,
             lastName,

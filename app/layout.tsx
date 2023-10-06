@@ -5,8 +5,8 @@ import { Inter } from 'next/font/google'
 
 import { ThemeProvider } from '@/providers/theme-provider'
 import { AuthProvider } from '@/providers/session-provider'
-import { Layout } from '@/interfaces'
-import { Toaster } from '@/components/ui/toaster'
+import { Layout } from '@/types'
+import { Toaster } from 'sonner'
 
 import favicon from '@/public/vercel.svg'
 
@@ -29,7 +29,7 @@ const RootLayout: FC<Layout> = ({ children }) => {
           <AuthProvider>
             {children}
           </AuthProvider>
-          <Toaster />
+          <Toaster richColors />
         </ThemeProvider>
       </body>
     </html>
