@@ -12,12 +12,6 @@ export const POST = async (req: NextRequest) => {
     if (!storeImageUrl) return new NextResponse('Store image URL is missing', { status: 400 })
     if (!ownerEmail) return new NextResponse('Store owner email is missing', { status: 400 })
 
-    const owner = await db.owner.findUnique({
-        where: {
-            id: parseInt(ownerId)
-        }
-    })
-
     const store = await db.store.create({
         data: {
             storeName,

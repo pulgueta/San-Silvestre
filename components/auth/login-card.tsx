@@ -8,12 +8,12 @@ import { useForm } from "react-hook-form"
 import { signIn } from "next-auth/react"
 import { Loader2Icon } from "lucide-react"
 import axios, { AxiosError } from 'axios'
+import { toast } from "sonner"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button, buttonVariants } from "@/components/ui/button"
-import { toast } from "sonner"
 
 const loginSchema = z.object({
     email: z.string().email('Please enter a valid email address'),

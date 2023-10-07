@@ -11,6 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { FileUpload } from '@/components/uploadthing/upload'
+import axios from 'axios'
 
 const storeSchema = z.object({
     storeName: z.string().min(4, 'The store name must be at least 4 characters long'),
@@ -21,17 +22,26 @@ const storeSchema = z.object({
 const CreateStoreModal = () => {
     const { data: session } = useSession()
 
+    console.log(session?.user);
+
     const form = useForm<z.infer<typeof storeSchema>>({
         resolver: zodResolver(storeSchema)
     })
 
-    const onSubmit = (data: z.infer<typeof storeSchema>) => {
-        console.log({
-            zodData: {
-                ...data,
+    const onSubmit = async (data: z.infer<typeof storeSchema>) => {
+        try {
+            const res = await axios.post('/api/stores', {
+                storeName: data.storeName,
+                storeCategory: data.storeCategory,
+                storeImageUrl: data.storeImageUrl,
                 ownerEmail: session?.user?.email,
-            }
-        });
+                // ownerId: session?.user?.id as string
+            })
+
+            console.log(res.data);
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     return (
@@ -107,4 +117,5 @@ const CreateStoreModal = () => {
         </Dialog>
     )
 }
+
 export default CreateStoreModal

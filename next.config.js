@@ -4,9 +4,6 @@ const nextConfig = {
     images: {
         domains: ['www.meloyalvarez.com', 'img.freepik.com', 'uploadthing.com', 'utfs.io']
     },
-    experimental: {
-        serverActions: true,
-    }
 }
 
 module.exports = nextConfig
