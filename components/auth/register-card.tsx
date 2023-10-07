@@ -10,10 +10,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Loader2Icon } from "lucide-react"
 import axios, { AxiosError } from "axios"
-import { signIn } from "next-auth/react"
 import { toast } from 'sonner'
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -50,22 +49,19 @@ const RegisterCard = () => {
     })
 
     const onSubmit = async ({ confirmPassword, ...rest }: z.infer<typeof registerSchema>) => {
-        await axios.post('/api/login', rest)
-            .then(async ({ data }) => {
-                await signIn('credentials', {
-                    callbackUrl: '/profile',
-                    redirect: true
-                })
-                toast.success('Login', {
+        await axios.post('/api/register', rest)
+            .then(() => {
+                toast.success('Success!', {
                     dismissible: true,
-                    description: 'Welcome back!'
+                    description: 'Account created successfully, please login now'
                 })
+                router.push('/profile')
             })
             .catch((error) => {
                 if (error instanceof AxiosError) {
                     toast.error(error.response?.status === 401 && 'Error', {
                         dismissible: true,
-                        description: 'Invalid credentials'
+                        description: 'Something happened! Try again.'
                     })
                 }
             })

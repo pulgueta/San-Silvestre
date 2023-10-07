@@ -30,8 +30,9 @@ export const POST = async (req: NextRequest) => {
             lastName,
             email,
             password: hashedPassword,
+            role: 'USER'
         }
     })
 
-    return NextResponse.json(rest, { status: 200 })
+    return NextResponse.json(rest, { status: 201 })
 }

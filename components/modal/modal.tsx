@@ -13,22 +13,15 @@ export default function Modal({ children }: { children: React.ReactNode }) {
         router.back()
     }, [router])
 
-    const onClick: MouseEventHandler = useCallback(
-        (e) => {
-            if (e.target === overlay.current || e.target === wrapper.current) {
-                if (onDismiss) onDismiss()
-            }
-        },
-        [onDismiss, overlay, wrapper]
-    )
+    const onClick: MouseEventHandler = useCallback((e) => {
+        if (e.target === overlay.current || e.target === wrapper.current) {
+            if (onDismiss) onDismiss()
+        }
+    }, [onDismiss, overlay, wrapper])
 
-    const onKeyDown = useCallback(
-        (e: KeyboardEvent) => {
-            if (e.key === 'Escape') onDismiss()
-        },
-
-        [onDismiss]
-    )
+    const onKeyDown = useCallback((e: KeyboardEvent) => {
+        if (e.key === 'Escape') onDismiss()
+    }, [onDismiss])
 
     useEffect(() => {
         document.addEventListener('keydown', onKeyDown)

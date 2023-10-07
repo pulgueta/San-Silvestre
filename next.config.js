@@ -2,7 +2,7 @@
 const nextConfig = {
     reactStrictMode: true,
     images: {
-        domains: ['www.meloyalvarez.com', 'img.freepik.com']
+        domains: ['www.meloyalvarez.com', 'img.freepik.com', 'uploadthing.com', 'utfs.io']
     },
     experimental: {
         serverActions: true,

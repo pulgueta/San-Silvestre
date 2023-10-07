@@ -10,3 +10,7 @@ export type InterceptLayout = {
 }
 
 export type MiddlewareFactory = (middleware: NextMiddleware | NextResponse<unknown>) => NextMiddleware;
+
+export type ModalType = {
+    type: 'createStore'
+}

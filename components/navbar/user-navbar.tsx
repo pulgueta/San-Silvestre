@@ -7,13 +7,13 @@ import { ThemeSwitcher } from './theme-swithcer'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { MobileLogOut, NavbarLogOut } from '@/components/ui/logout-button'
-import { authOptions } from '@/lib/next-auth'
+import { CustomUser, authOptions } from '@/lib/next-auth'
 
 const UserNavbar = async () => {
 
-    const user = await getServerSession(authOptions)
+    const user = await getServerSession(authOptions) as CustomUser
 
-    console.log(user);
+    console.log(user?.role);
 
     const routes = [
         {
@@ -28,6 +28,10 @@ const UserNavbar = async () => {
             label: 'Orders',
             href: '/orders',
         },
+        {
+            label: 'Become a seller',
+            href: '/become-a-seller'
+        }
     ]
 
     return (
@@ -36,7 +40,12 @@ const UserNavbar = async () => {
             <ul className='hidden lg:flex md:items-center md:gap-8'>
                 {routes.map(route => (
                     <li key={route.href}>
-                        <Link href={route.href} className='font-medium text-lg hover:text-neutral-400 transition-colors duration-300'>
+                        <Link href={route.href} className={
+                            route.label !== 'Become a seller'
+                                ? 'font-medium text-lg hover:text-neutral-400 transition-colors duration-300'
+                                : 'font-bold text-white bg-gray-800 py-2 px-4 rounded bg-gradient-to-r from-pink-400 to-fuchsia-400 hover:hue-rotate-60 text-lg transition-all duration-300'
+                        }
+                        >
                             {route.label}
                         </Link>
                     </li>
@@ -65,7 +74,12 @@ const UserNavbar = async () => {
                             <ul className='flex flex-col space-y-4 mt-8'>
                                 {routes.map(route => (
                                     <li key={route.href}>
-                                        <Link href={route.href} className='font-medium text-lg hover:text-neutral-400 transition-colors duration-300'>
+                                        <Link href={route.href} className={
+                                            route.label !== 'Become a seller'
+                                                ? 'font-medium text-lg hover:text-neutral-400 transition-colors duration-300'
+                                                : 'font-bold text-white bg-gray-800 py-2 px-4 rounded bg-gradient-to-r from-pink-400 to-fuchsia-400 hover:hue-rotate-60 text-lg transition-all duration-300'
+                                        }
+                                        >
                                             {route.label}
                                         </Link>
                                     </li>

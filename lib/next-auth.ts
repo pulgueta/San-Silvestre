@@ -1,22 +1,46 @@
-import { NextAuthOptions } from "next-auth";
+import type { ISODateString, NextAuthOptions, User } from 'next-auth'
+import type { JWT } from 'next-auth/jwt'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import { compare } from 'bcrypt'
 
-import { db } from "@/database/db";
-import { compare } from "bcrypt";
+import { db } from '@/database/db'
+
+export type CustomSession = {
+    user?: CustomUser
+    expires: ISODateString
+}
+
+export type CustomUser = {
+    id?: number
+    firstName?: string
+    lastName?: string
+    email?: string
+    password?: string
+    imageUrl?: string | null
+    role?: string
+}
 
 export const authOptions: NextAuthOptions = {
     adapter: PrismaAdapter(db),
     providers: [
         CredentialsProvider({
-            name: "Credentials",
+            name: 'Credentials',
             credentials: {
                 email: {},
                 password: {}
             },
             async authorize(credentials) {
-                const user = await db.user.findFirst({
-                    where: { email: credentials?.email }
+                const user = await db.user.findUnique({
+                    where: { email: credentials?.email },
+                    select: {
+                        id: true,
+                        firstName: true,
+                        lastName: true,
+                        password: true,
+                        email: true,
+                        role: true,
+                    }
                 })
 
                 if (!user || !user.password) {
@@ -29,21 +53,24 @@ export const authOptions: NextAuthOptions = {
                     throw new Error('Invalid credentials')
                 }
 
-                return user as any
+                return {
+                    ...user,
+                    id: user.id.toString()
+                }
             },
         }),
     ],
     callbacks: {
-        async jwt({ token, user, session }) {
+        async jwt({ token, user }) {
             if (user) {
-                return {
-                    ...token,
-                }
+                token.user = user
             }
+
             return token
         },
-        async session({ session, user, token }) {
-            console.log('sessionCallback', { token, user, session })
+        async session({ session, token }: { session: any, token: JWT, user: User }) {
+            session.user = token.user as CustomUser
+
             return session
         },
     },
